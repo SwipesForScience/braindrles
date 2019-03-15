@@ -2,193 +2,27 @@ export default {
 
   // if set to true, the user will be routed to /tutorial instead of /play if
   // they haven't taken a tutorial
-  needsTutorial: false,
+  needsTutorial: true,
+  showConfigure: false,
     // each time the app is run, it will check this manifest and update the firebase database
     // if new entries are there, they will be added, and entries that aren't in the manifest
     // but are in the firebase database will be *removed*
-  manifestUrl: 'https://raw.githubusercontent.com/SwipesForScience/exampleConfig/master/bsHbnManifest.json',
-  manifestType: 'json',
+  manifestS3: {
+    bucketURL: 'https://cors-anywhere.herokuapp.com/https://braindrles.s3-us-west-1.amazonaws.com/?list-type=2&prefix=gifbrles',
+    bucket: 'braindrles',
+    prefix: '',
+    delimiter: '',
+  },
+  manifestType: 'S3',
   widgetType: 'ImageSwipe', // 'EvalNHA',
-  widgetUsesSecret: true,
+  widgetUsesSecret: false,
   widgetProperties: {
-    baseUrlTemplate: 'https://s3-us-west-2.amazonaws.com/akeshavan-mindcontrol/hbnSplat/{0}/tiles/base_{1}.png',
+    baseUrlTemplate: 'https://s3-us-west-1.amazonaws.com/braindrles/{0}.gif',
     delimiter: '__',
     leftSwipeLabel: 'Fail',
     rightSwipeLabel: 'Pass',
   },
 
-  // if manifestType = 'pubmed' then you should also include a manifestQuery key.
-  // if manifestType = 'json' then you're fine
-  // if manifestType = 'github' then you need to provide a github user, repo,
-  // and path under manifestGitHub
-
-// manifestType: 'github',
-// manifestQuery: '(neuroimaging OR "Magnetic Resonance Imaging" OR "MRI") AND brain AND autism',
-// manifestGitHub: { user: 'akeshavan',
-//   repo: 'mHealthLandscape',
-//   path: 'ios',
-// },
-
-// manifestType: 'S3',
-// manifestS3: {
-//   bucket: 'himatdata',
-//   prefix: 'BeringStrait',
-//   delimiter: '.wav',
-//   max_keys: 10000,
-// },
-
-// widgetType: 'ImageSwipe', //'BranchingTemplateWidget',
-/* eslint-disable */
-// widgetProperties: {
-  // titleKey: 'trackName',
-  // textKey: 'description',
-  // baseUrlTemplate: 'https://raw.githubusercontent.com/akeshavan/mHealthLandscape/master/ios/{0}.json',
-  // delimiter: '%',
-  // autoComplete: [
-  //   'active data entry',
-  //   'passive data entry',
-  //   'gamified',
-  //   'social media',
-  //   'educational',
-  //   'sensors',
-  // ],
-  // stages: [
-  //   {
-  //     id: 'relevant',
-  //     showCriteria: {},
-  //     question: 'Is this app about mental health?',
-  //     responseProperties: {
-  //       widgetType: 'TextBinarySwipe',
-  //       widgetProperties: {
-  //         titleKey: 'trackName',
-  //         textKey: 'description',
-  //         delimiter: '%',
-  //         baseUrlTemplate: 'https://raw.githubusercontent.com/akeshavan/mHealthLandscape/master/ios/{0}.json',
-  //         leftSwipeLabel: 'No',
-  //         rightSwipeLabel: 'Yes',
-  //       },
-  //     },
-  //   },
-  //   {
-  //     id: 'datacollection',
-  //     showCriteria: {
-  //       node: 'relevant',
-  //       statement: '==',
-  //       value: 1,
-  //     },
-  //     question: 'Does this app collect user data?',
-  //     responseProperties: {
-  //       widgetType: 'TextBinarySwipe',
-  //       widgetProperties: {
-  //         titleKey: 'trackName',
-  //         textKey: 'description',
-  //         delimiter: '%',
-  //         baseUrlTemplate: 'https://raw.githubusercontent.com/akeshavan/mHealthLandscape/master/ios/{0}.json',
-  //         leftSwipeLabel: 'No',
-  //         rightSwipeLabel: 'Yes',
-  //       },
-  //     },
-  //   },
-  //   {
-  //     id: 'sensors',
-  //     showCriteria: {
-  //       node: 'datacollection',
-  //       statement: '==',
-  //       value: 1,
-  //     },
-  //     question: 'Interoperable with sensors/wearables?',
-  //     responseProperties: {
-  //       widgetType: 'TextBinarySwipe',
-  //       widgetProperties: {
-  //         titleKey: 'trackName',
-  //         textKey: 'description',
-  //         delimiter: '%',
-  //         baseUrlTemplate: 'https://raw.githubusercontent.com/akeshavan/mHealthLandscape/master/ios/{0}.json',
-  //         leftSwipeLabel: 'No',
-  //         rightSwipeLabel: 'Yes, sensors',
-  //       },
-  //     },
-  //   },
-  //   {
-  //     id: 'social',
-  //     showCriteria: {
-  //       node: 'datacollection',
-  //       statement: '==',
-  //       value: 1,
-  //     },
-  //     question: 'Is there a social component?',
-  //     responseProperties: {
-  //       widgetType: 'TextBinarySwipe',
-  //       widgetProperties: {
-  //         titleKey: 'trackName',
-  //         textKey: 'description',
-  //         delimiter: '%',
-  //         baseUrlTemplate: 'https://raw.githubusercontent.com/akeshavan/mHealthLandscape/master/ios/{0}.json',
-  //         leftSwipeLabel: 'Not social',
-  //         rightSwipeLabel: 'Yes, social',
-  //       },
-  //     },
-  //   },
-  //   {
-  //     id: 'game',
-  //     showCriteria: {
-  //       node: 'datacollection',
-  //       statement: '==',
-  //       value: 1,
-  //     },
-  //     question: 'Are there game elements?',
-  //     responseProperties: {
-  //       widgetType: 'TextBinarySwipe',
-  //       widgetProperties: {
-  //         titleKey: 'trackName',
-  //         textKey: 'description',
-  //         delimiter: '%',
-  //         baseUrlTemplate: 'https://raw.githubusercontent.com/akeshavan/mHealthLandscape/master/ios/{0}.json',
-  //         leftSwipeLabel: 'No',
-  //         rightSwipeLabel: 'Yes',
-  //       },
-  //     },
-  //   },
-  //   {
-  //     id: 'disorder',
-  //     showCriteria: {
-  //       node: 'datacollection',
-  //       statement: '==',
-  //       value: 1,
-  //     },
-  //     question: 'What disorders does it target?',
-  //     responseProperties: {
-  //       widgetType: 'TextTagger',
-  //       widgetProperties: {
-  //         titleKey: 'trackName',
-  //         textKey: 'description',
-  //         delimiter: '%',
-  //         baseUrlTemplate: 'https://raw.githubusercontent.com/akeshavan/mHealthLandscape/master/ios/{0}.json',
-  //         autoComplete: ['depression', 'anxiety', 'sleep'],
-  //       },
-  //     },
-  //   },
-  //   {
-  //     id: 'treatment',
-  //     showCriteria: {
-  //       node: 'datacollection',
-  //       statement: '==',
-  //       value: 1,
-  //     },
-  //     question: 'What is the treatment strategy?',
-  //     responseProperties: {
-  //       widgetType: 'TextTagger',
-  //       widgetProperties: {
-  //         titleKey: 'trackName',
-  //         textKey: 'description',
-  //         delimiter: '%',
-  //         baseUrlTemplate: 'https://raw.githubusercontent.com/akeshavan/mHealthLandscape/master/ios/{0}.json',
-  //         autoComplete: ['CBT', 'journal'],
-  //       },
-  //     },
-  //   },
-  // ],
-// },
 /* eslint-enable */
   iconAttribute: {
     name: 'openmoji',
@@ -254,31 +88,30 @@ export default {
     },
   },
 
-
     // this shows a 'beta' ribbon in the bottom right corner
   betaMode: false,
 
     // this comes from your firebase console
   firebaseKeys: {
-    apiKey: 'AIzaSyBLr1HyCf7tXGwnppkfjlIb6I0XSkJgybY',
-    authDomain: 'swipesforsciencedev1.firebaseapp.com',
-    databaseURL: 'https://swipesforsciencedev1.firebaseio.com',
-    projectId: 'swipesforsciencedev1',
-    storageBucket: 'swipesforsciencedev1.appspot.com',
-    messagingSenderId: '380364880642',
+    apiKey: 'AIzaSyAYB2jWWdStY3yV8FjWo6pwIv6mLt2ezZw',
+    authDomain: 'braindrles.firebaseapp.com',
+    databaseURL: 'https://braindrles.firebaseio.com',
+    projectId: 'braindrles',
+    storageBucket: '',
+    messagingSenderId: '895217350482',
   },
 
   app: {
-    navbarVariant: 'info',
+    navbarVariant: 'danger',
   },
 
     // Homepage configuration
     // your app's title and tagline
   home: {
-    title: 'Swipes for Science',
-    tagline: 'A citizen science game template',
+    title: 'braindrles',
+    tagline: 'Swipe right for results',
       // background image on Homepage
-    backgroundUrl: 'https://raw.githubusercontent.com/SwipesForScience/testConfig/master/images/SwipesForScience.svg?sanitize=true',
+    backgroundUrl: 'https://braindrles.us/static/img/mainGIF.dee1125.gif',
   },
 
     // Play configuration
@@ -301,7 +134,7 @@ export default {
     // describe your problem and the way you want people to annotate
   tutorial: {
       // there is only 1 available custom animiation right now, and its 'Bubbles'
-    customBackgroundAnimation: 'Bubbles',
+    customBackgroundAnimation: null,
       // steps have 2 parts, the intro and examples. In the intro you provide
       // text and images. In the examples, you provide text, data pointers, and tutorial steps
       // that the widget will display
@@ -309,32 +142,46 @@ export default {
       intro: [
         {
             // keep the text really short
-          text: 'here is an example tutorial step',
-          image: 'https://upload.wikimedia.org/wikipedia/commons/8/8b/Humpback_whales_in_singing_position.jpg',
+          text: 'Stroke causes lesions, aka holes in the brain:',
+          image: 'https://braindrles.us/static/img/gifbrles_Intro.bbc77c9.gif',
         },
         {
             // use \n to linebreak the text
-          text: 'here is another one.',
-          image: 'https://upload.wikimedia.org/wikipedia/commons/d/dd/Hydrophone_being_lowered_into_the_Atlantic.jpg',
+          text: `Lesions can be anywhere in the brain and come in all shapes and sizes. \n
+          In a passing image, you can clearly see the lesion correctly labeled in red:`,
+          image: 'https://braindrles.us/static/img/gifbrles_BigLes.0077eb0.gif',
+        },
+        {
+          // keep the text really short
+          //eslint-disable-next-line
+          text: `In a failing image, the lesion mask (in red) is incorrectly labeled. 
+          Sometimes the lesion mask covers healthy tissue:`,
+          image: 'https://braindrles.us/static/img/gifbrles_FailTooMuch.9cbbf06.gif',
+        },
+        {
+          // keep the text really short
+          //eslint-disable-next-line
+          text: `Sometimes you won't see a lesion but there is a lesion mask anyway:`,
+          image: 'https://braindrles.us/static/img/gifbrles_FailTooMuch2.6e9cc83.gif',
         },
       ],
       examples: [
         {
             // fill these with examples with respect to the widget you're using
-          text: 'swipe right when the image is good quality',
-          pointer: 'sub-NDARYX806FL1__cor_184',
+          text: 'swipe right when the lesion is filled correctly',
+          pointer: 'gifbrles_031926',
           answer: 1,
           tutorialStep: 0,
         },
         {
           text: 'swipe left when its bad',
-          pointer: 'sub-NDAREG590BNY__sag_201',
+          pointer: 'gifbrles_c0005s0026t01',
           answer: 0,
           tutorialStep: 1,
         },
         {
           text: `if you're not sure, click 'help' \n to discuss with scientists ${''}`,
-          pointer: 'sub-NDAREW671HZW__ax_86',
+          pointer: 'gifbrles_031899',
           answer: 0,
           tutorialStep: 2,
         },
