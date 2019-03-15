@@ -5,17 +5,14 @@ set -e # exit with nonzero exit code if anything fails
 if [[ $TRAVIS_BRANCH == "master" && $TRAVIS_PULL_REQUEST == "false" ]]; then
 
 echo "Starting to update gh-pages\n"
-pwd
-ls
 #copy data we're interested in to other place
-cp -R ${GH_REPO}/dist $HOME/dist
+cp -R dist $HOME/dist
 
 #go to home and setup git
 cd $HOME
 git config --global user.email "travis@travis-ci.org"
 git config --global user.name "Travis"
-echo "debug"
-ls
+
 #using token clone gh-pages branch
 git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/${GH_USER}/${GH_REPO}.git gh-pages > /dev/null
 
