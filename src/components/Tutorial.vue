@@ -4,8 +4,8 @@
   <div  v-for="(s, index) in tutSteps.intro" :key="'i'+index">
     <template v-if="step === index">
       <div class="container">
-        <p v-html="s.text" class="lead mt-3"></p>
-        <img :src="s.image" class="mt-3 pt-3 img"/>
+        <p v-html="s.text" class="mt-3 lead"></p>
+        <img :src="s.image" class="pt-3 img"/>
       </div>
     </template>
   </div>
@@ -14,8 +14,8 @@
     <template v-if="step === index + tutSteps.intro.length">
       <div class="text-center message w-100 full" :id="'example'+index">
         <!-- <vue-typer v-if="currentBin.bin === index+steps.intro.length" :text='step.text' :repeat='0' class="message" :type-delay='50'></vue-typer> -->
-        <p class="lead" v-html="s.text"></p>
-        <div v-if="s.pointer" class="mt-3">
+        <p class="container lead" v-html="s.text"></p>
+        <div v-if="s.pointer" class="mt-3 scaleDown">
           <WidgetSelector :widgetType="widgetType"
            :widgetPointer="s.pointer"
            :widgetProperties="widgetProperties"
@@ -45,6 +45,19 @@
 </template>
 
 <style>
+
+  .v-stepper {
+    transform: scale(0.3) translateX(-200px);
+  }
+
+  .v-step.is-active .label .index {
+    background-color: #dc3545;
+    color: white;
+  }
+
+  .scaleDown {
+    transform: scale(0.8) translateY(-80px);
+  }
 
   .img {
     max-height: 80vh;
