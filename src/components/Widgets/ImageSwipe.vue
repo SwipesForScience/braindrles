@@ -1,7 +1,14 @@
 <template>
   <div class="imageSwipe">
       <b-modal ref="groundTruthFeedbackModal" title="Take another look" :ok-only="true">
-        <p class="lead">{{groundTruthFeedback}}</p>
+        <p class="lead">
+          <span class="text-success" v-if="groundTruthValue">
+            <b>{{groundTruthFeedback}}</b>
+          </span>
+          <span class="text-danger" v-else>
+            <b>{{groundTruthFeedback}}</b>
+            </span>
+        </p>
         <progressive-img class="user-card__picture mx-auto" :src="groundTruthUrl"
           placeholder="https://unsplash.it/500"
           :aspect-ratio="1"
@@ -152,6 +159,7 @@
          */
         groundTruthUrl: '',
         groundTruthFeedback: '',
+        groundTruthValue: null,
       };
     },
     computed: {
@@ -231,6 +239,7 @@
           this.fillPropertyPattern(this.widgetProperties.baseUrlTemplate,
             this.widgetProperties.delimiter) : null;
         this.groundTruthFeedback = groundTruth.feedback;
+        this.groundTruthValue = groundTruth.truth;
         this.$refs.groundTruthFeedbackModal.show();
       },
       /**

@@ -19,7 +19,7 @@
 
         <b-form-group id="consentOpenButton"
                       :label="consentFormLabel"
-                      label-for="openConsent">
+                      label-for="openConsent" v-if="config.needsConsent">
             <b-button v-if="!form.consented"
              variant="success" id="openConsent"
              @click="openConsentModal"> Open Consent Form </b-button>
@@ -75,7 +75,7 @@
 
 
         <b-button type="submit"
-         variant="primary" :disabled="!validated || !form.consented">Submit</b-button>
+         variant="primary" :disabled="config.needsConsent ? (!validated || !form.consented) : false">Submit</b-button>
 
         <p class="mt-3">
           Already have an account? <router-link to="/login">Log In</router-link>
