@@ -212,19 +212,52 @@ export default {
       examples: [
         {
             // fill these with examples with respect to the widget you're using
-          text: 'swipe right when the lesion is filled correctly',
+          text: 'Swipe right when the lesion is filled correctly',
           pointer: 'gifbrles_031926',
           answer: 1,
           tutorialStep: 0,
         },
         {
-          text: 'swipe left when its bad',
+          text: 'Swipe left when its bad',
           pointer: 'gifbrles_c0005s0026t01',
           answer: 0,
           tutorialStep: 1,
         },
         {
-          text: `if you're not sure, click 'help' \n to discuss with scientists ${''}`,
+            // fill these with examples with respect to the widget you're using
+          text: 'Sometimes the lesion is in a different part of the brain, but still correct, so you should swipe right',
+          pointer: 'gifbrles_031950',
+          answer: 1,
+          tutorialStep: 0,
+        },
+        {
+            // fill these with examples with respect to the widget you're using
+          text: 'Other times, the lesion is more subtle, but still correct, so you should swipe right',
+          pointer: 'gifbrles_031946',
+          answer: 1,
+          tutorialStep: 0,
+        },
+        {
+            // fill these with examples with respect to the widget you're using
+          text: 'Still other times, there may be more than one lesion - make sure the lesion mask covers all of the lesions before you swipe right',
+          pointer: 'gifbrles_031947',
+          answer: 1,
+          tutorialStep: 0,
+        },
+        {
+          text: 'However, if the lesion mask is in the right place but too big (e.g. encompasses a lot of healthy tissue too), swipe left',
+          pointer: 'gifbrles_c0011s0009t01',
+          answer: 0,
+          tutorialStep: 1,
+        },
+        {
+          text: 'And sometimes, the computer generates REALLY CRAZY lesion masks! Like this one. Definitely swipe left.',
+          pointer: 'gifbrles_c0007s0032t01',
+          answer: 0,
+          tutorialStep: 1,
+        },
+        {
+          text: `Finally, if you're not sure, click 'help' \n to discuss with scientists ${''}`,
           pointer: 'gifbrles_031899',
           answer: 0,
           tutorialStep: 2,
