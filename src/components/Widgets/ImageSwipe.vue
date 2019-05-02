@@ -7,13 +7,26 @@
           </span>
           <span class="text-danger" v-else>
             <b>{{groundTruthFeedback}}</b>
-            </span>
+          </span>
         </p>
         <progressive-img class="user-card__picture mx-auto" :src="groundTruthUrl"
           placeholder="https://unsplash.it/500"
           :aspect-ratio="1"
           >
         </progressive-img>
+        <p class="mt-3 pt-3">
+          Still have questions?
+          <br>
+          <!-- {{groundTruthPointer}} -->
+        <b-button v-if="playMode"
+         :to="'/review/'+groundTruthPointer"
+         ref="helpButton"
+         variant="info"
+         class="helpbtn"
+         >
+         Discuss with scientists
+         </b-button>
+       </p>
       </b-modal>
       <transition :key="swipe" :name="swipe" >
         <div class="user-card" :key="baseUrl">
@@ -160,6 +173,7 @@
         groundTruthUrl: '',
         groundTruthFeedback: '',
         groundTruthValue: null,
+        groundTruthPointer: null,
       };
     },
     computed: {
@@ -240,6 +254,7 @@
             this.widgetProperties.delimiter) : null;
         this.groundTruthFeedback = groundTruth.feedback;
         this.groundTruthValue = groundTruth.truth;
+        this.groundTruthPointer = groundTruth['.key'];
         this.$refs.groundTruthFeedbackModal.show();
       },
       /**
