@@ -491,10 +491,13 @@
           const coinFlip = Math.random();
           if (coinFlip < truthProb) {
             sampleId = this.shuffle(this.groundTruthSamples)[0];
+            // make sure its not the current widgetPointer. No repeats!
+            if (sampleId === this.widgetPointer) {
+              sampleId = this.shuffle(this.groundTruthSamples)[1];
+            }
             this.groundTruthFeedback.message = sampleId.feedback;
             this.currentGroundTruth = sampleId;
           }
-          // const sampleId = null;
         }
 
         // if sampleId isn't null, set the widgetPointer
