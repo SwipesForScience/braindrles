@@ -216,6 +216,21 @@
          * secret key (btoa'd) from the firebase server, in case the widget is locked.
          */
         serverSecret: '',
+        /**
+        * if there is a ground truth for the sample, that data fills this array
+        */
+        groundTruthSamples: [],
+        /**
+         * store the current ground truth feedback here in case we need to override
+         */
+        groundTruthFeedback: {
+          variant: 'danger',
+          message: '',
+        },
+        /**
+         * current ground truth sample if its shown.
+         */
+        currentGroundTruth: {},
       };
     },
     watch: {
@@ -247,7 +262,8 @@
      * and also the samples the user has seen.
      */
     mounted() {
-      this.initSampleCounts();
+      this.initGroundTruth().then(this.initSampleCounts);
+      // this.initSampleCounts();
       this.initSeenSamples();
       this.initUserSettings();
       this.fetchServerSecret();
@@ -305,6 +321,18 @@
               this.userSettings = val;
             }
           });
+      },
+      /**
+       * check ground truth & initialize if it exists
+       */
+      initGroundTruth() {
+        return this.db.ref('sampleTruths').once('value', (snap) => {
+          const groundTruthSamples = snap.val() || [];
+          this.groundTruthSamples = _.map(groundTruthSamples, (val, key) => ({
+            '.key': key,
+            ...val,
+          }));
+        });
       },
       /**
       * update the /userSettings/<username> in firebase.
@@ -426,10 +454,14 @@
       */
       sendWidgetResponse(response) {
         // 1. get feedback from the widget, and display if needed
-        const feedback = this.$refs.widget.getFeedback(response);
+        const feedback = this.$refs.widget.getFeedback(response, this.currentGroundTruth);
         if (feedback.show) {
           this.feedback = feedback;
-          this.showAlert();
+          if (feedback.needsModal) {
+            this.$refs.widget.showFeedbackModal(this.currentGroundTruth);
+          } else {
+            this.showAlert();
+          }
         }
 
         // 2. send the widget data
@@ -437,7 +469,7 @@
         this.sendVote(response, timeDiff);
 
         // 3. update the score and count for the sample
-        this.updateScore(this.$refs.widget.getScore(response));
+        this.updateScore(this.$refs.widget.getScore(response, this.currentGroundTruth));
         this.updateSummary(this.$refs.widget.getSummary(response));
         this.updateCount();
         this.updateSeen();
@@ -452,7 +484,18 @@
       setNextSampleId() {
         this.startTime = new Date();
 
-        const sampleId = this.sampleUserPriority()[0];
+        let sampleId = this.sampleUserPriority()[0];
+        this.currentGroundTruth = {};
+        if (this.groundTruthSamples.length) {
+          const truthProb = this.currentLevel.truth_prob;
+          const coinFlip = Math.random();
+          if (coinFlip < truthProb) {
+            sampleId = this.shuffle(this.groundTruthSamples)[0];
+            this.groundTruthFeedback.message = sampleId.feedback;
+            this.currentGroundTruth = sampleId;
+          }
+          // const sampleId = null;
+        }
 
         // if sampleId isn't null, set the widgetPointer
         if (sampleId) {

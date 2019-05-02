@@ -234,14 +234,20 @@
       /**
        * proxy the widget's getFeedback method.
        */
-      getFeedback(response) {
-        return this.$refs[this.widgetType].getFeedback(response);
+      getFeedback(response, groundTruth) {
+        return this.$refs[this.widgetType].getFeedback(response, groundTruth);
+      },
+      /**
+       * show feedbackmodal
+       */
+      showFeedbackModal(groundTruth) {
+        this.$refs[this.widgetType].showFeedbackModal(groundTruth);
       },
       /**
        * proxy the widget's getScore method.
        */
-      getScore(response) {
-        return this.$refs[this.widgetType].getScore(response);
+      getScore(response, groundTruth) {
+        return this.$refs[this.widgetType].getScore(response, groundTruth);
       },
       /**
        * proxy the widget's getSummary method.

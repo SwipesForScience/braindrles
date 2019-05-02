@@ -1,5 +1,13 @@
 <template>
   <div class="imageSwipe">
+      <b-modal ref="groundTruthFeedbackModal" title="Take another look" :ok-only="true">
+        <p class="lead">{{groundTruthFeedback}}</p>
+        <progressive-img class="user-card__picture mx-auto" :src="groundTruthUrl"
+          placeholder="https://unsplash.it/500"
+          :aspect-ratio="1"
+          >
+        </progressive-img>
+      </b-modal>
       <transition :key="swipe" :name="swipe" >
         <div class="user-card" :key="baseUrl">
             <div class="image_area">
@@ -138,6 +146,12 @@
          * save the swipe direction.
          */
         swipe: null,
+        /**
+         * storage spots for ground truth feedback modal if the user
+         * gets it wrong
+         */
+        groundTruthUrl: '',
+        groundTruthFeedback: '',
       };
     },
     computed: {
@@ -200,17 +214,50 @@
       /**
        * Get the score based on a user's response.
        */
-      getScore(response) {
-        const fb = this.getFeedback(response);
+      getScore(response, groundTruth) {
+        const fb = this.getFeedback(response, groundTruth);
         if (fb.variant === 'danger') {
           return 0;
         }
         return 1;
       },
       /**
+       * a method to show a pop up modal with the right answer
+       * from ground truth
+       */
+      showFeedbackModal(groundTruth) {
+        // set the ground truth URL for the modal image to show
+        this.groundTruthUrl = this.widgetProperties.baseUrlTemplate && groundTruth['.key'] ?
+          this.fillPropertyPattern(this.widgetProperties.baseUrlTemplate,
+            this.widgetProperties.delimiter) : null;
+        this.groundTruthFeedback = groundTruth.feedback;
+        this.$refs.groundTruthFeedbackModal.show();
+      },
+      /**
        * Get the feedback based on a user's response.
        */
-      getFeedback(response) {
+      getFeedback(response, groundTruth) {
+        /**
+         * if there is a ground truth then override!
+         */
+
+        if (!_.isEmpty(groundTruth)) {
+          if (response !== groundTruth.truth) {
+            // bad news!
+            return {
+              show: true,
+              variant: 'danger',
+              message: groundTruth.feedback || 'That\'s not right! Take another look.',
+              needsModal: true,
+            };
+          }
+          return {
+            show: true,
+            variant: 'success',
+            message: 'You\'re correct!',
+          };
+        }
+
         let widgetSummary;
         if (!this.widgetSummary) {
           widgetSummary = {
@@ -219,6 +266,7 @@
         } else {
           widgetSummary = this.widgetSummary;
         }
+
         if (widgetSummary.count > 4) {
           // if this sample has been seen more than 4 times
           // count the number of points
@@ -227,14 +275,14 @@
           if (aveVote >= 0.7 && !response) {
             // on average, most people gave this sample some points. If you didn't, lose a point
             return {
-              show: false,
+              show: true,
               variant: 'danger',
               message: '+0 most people swiped right',
             };
           } else if (aveVote <= 0.3 && response) {
             // on average, most people did not mark this image, but you did
             return {
-              show: false,
+              show: true,
               variant: 'danger',
               message: '+0 most people swiped left',
             };
