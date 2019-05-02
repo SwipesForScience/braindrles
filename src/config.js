@@ -1,3 +1,5 @@
+import braindrles from '@/assets/braindrles.gif';
+
 export default {
 
   // if set to true, the user will be routed to /tutorial instead of /play if
@@ -153,9 +155,9 @@ export default {
     // your app's title and tagline
   home: {
     title: 'braindrles',
-    tagline: 'Swipe right for results',
+    tagline: 'Help us learn about stroke',
       // background image on Homepage
-    backgroundUrl: 'https://braindrles.us/static/img/mainGIF.dee1125.gif',
+    backgroundUrl: braindrles,
   },
 
     // Play configuration
