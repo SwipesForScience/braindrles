@@ -1,55 +1,47 @@
 <template name="tutorial">
-  <div class="tutorial" ref="tutorial">
-    <Bubbles v-if="backgroundAnimation == 'Bubbles' "/>
-    <!-- Title -->
-    <div>
-      <h1>Tutorial</h1>
-      <!-- <p class="lead">Scroll down to learn how to play</p> -->
-    </div>
-
-    <!-- Progress Bar -->
-    <div class="pbar pt-3 pb-3" v-if="currentBin.bin">
-      <b-progress :value="scrollPosition" :max="1" show-progress class="ml-3 mr-3"></b-progress>
-    </div>
-
-    <!-- Introduction steps -->
-    <div v-for="(step, index) in steps.intro" class="fullpage container" :key="'i'+index">
-      <div class="" :id="'intro'+index">
-        <!-- <vue-typer v-if="currentBin.bin === index" :text='step.text' :repeat='0' class="message" :type-delay='50'></vue-typer> -->
-        <p v-html="step.text" class="lead"></p>
+  <div class="full">
+  <v-stepper ref="stepper" :steps="steps" v-model="step"></v-stepper>
+  <div  v-for="(s, index) in tutSteps.intro" :key="'i'+index">
+    <template v-if="step === index">
+      <div class="container">
+        <p v-html="s.text" class="lead mt-3"></p>
+        <img :src="s.image" class="mt-3 pt-3 img"/>
       </div>
-      <img :src="step.image" class="mt-3 pt-3 img"/>
-    </div>
+    </template>
+  </div>
 
-    <!-- Example Steps -->
-    <div v-for="(step, index) in steps.examples" class="fullpage" :key="'j'+index">
-      <div class="text-center message w-100" :id="'example'+index">
+  <div v-for="(s, index) in tutSteps.examples" :key="'e'+index">
+    <template v-if="step === index + tutSteps.intro.length">
+      <div class="text-center message w-100 full" :id="'example'+index">
         <!-- <vue-typer v-if="currentBin.bin === index+steps.intro.length" :text='step.text' :repeat='0' class="message" :type-delay='50'></vue-typer> -->
-        <p class="lead" v-html="step.text"></p>
-        <div v-if="step.pointer" class="mt-3">
+        <p class="lead" v-html="s.text"></p>
+        <div v-if="s.pointer" class="mt-3">
           <WidgetSelector :widgetType="widgetType"
-           :widgetPointer="step.pointer"
+           :widgetPointer="s.pointer"
            :widgetProperties="widgetProperties"
            :widgetSummary="widgetSummary"
            :playMode="'tutorial'"
            :userSettings="userSettings"
-           :tutorialStep="step.tutorialStep"
+           :tutorialStep="s.tutorialStep"
            ref="widget"
           />
         </div>
-        <div v-if="step.tutorialCompleted">
-          <b-button @click="tutorialComplete" class="mt-3">Play now</b-button>
+        <div v-if="s.tutorialCompleted">
+          <b-button @click="tutorialComplete" class="mt-3" size="lg" variant="success">
+            Play now
+          </b-button>
         </div>
       </div>
-    </div>
-
-    <div v-if="bins.length-1 != currentBin.bin" v-scroll-to="nextStep">
-      <Arrow />
-    </div>
-
-    <p>
-    </p>
+    </template>
   </div>
+
+  <!-- Stepper Controls -->
+  <div class="mt-3 pt-3 text-center mx-auto w-100" style="position: absolute; bottom: 10px">
+    <b-button variant="secondary" size="lg" @click="$refs.stepper.previous()" v-if="step">Previous</b-button>
+    <b-button variant="info" size="lg" @click="$refs.stepper.next()" v-if="step !== steps">Next</b-button>
+  </div>
+
+</div>
 </template>
 
 <style>
@@ -60,12 +52,30 @@
     max-width: 500px;
   }
   .tutorial {
-    /* height: 500vh; */
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='50' height='25' viewBox='0 0 50 25'%3E%3Cdefs%3E%3Crect stroke='%23ffffff' stroke-width='0.1' width='1' height='1' id='s'/%3E%3Cpattern id='a' width='2' height='2' patternUnits='userSpaceOnUse'%3E%3Cg stroke='%23ffffff' stroke-width='0.1'%3E%3Crect fill='%23fafafa' width='1' height='1'/%3E%3Crect fill='%23ffffff' width='1' height='1' x='1' y='1'/%3E%3Crect fill='%23f5f5f5' width='1' height='1' y='1'/%3E%3Crect fill='%23f0f0f0' width='1' height='1' x='1'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='b' width='5' height='11' patternUnits='userSpaceOnUse'%3E%3Cg fill='%23ebebeb'%3E%3Cuse xlink:href='%23s' x='2' y='0'/%3E%3Cuse xlink:href='%23s' x='4' y='1'/%3E%3Cuse xlink:href='%23s' x='1' y='2'/%3E%3Cuse xlink:href='%23s' x='2' y='4'/%3E%3Cuse xlink:href='%23s' x='4' y='6'/%3E%3Cuse xlink:href='%23s' x='0' y='8'/%3E%3Cuse xlink:href='%23s' x='3' y='9'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='c' width='7' height='7' patternUnits='userSpaceOnUse'%3E%3Cg fill='%23e5e5e5'%3E%3Cuse xlink:href='%23s' x='1' y='1'/%3E%3Cuse xlink:href='%23s' x='3' y='4'/%3E%3Cuse xlink:href='%23s' x='5' y='6'/%3E%3Cuse xlink:href='%23s' x='0' y='3'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='d' width='11' height='5' patternUnits='userSpaceOnUse'%3E%3Cg fill='%23ffffff'%3E%3Cuse xlink:href='%23s' x='1' y='1'/%3E%3Cuse xlink:href='%23s' x='6' y='3'/%3E%3Cuse xlink:href='%23s' x='8' y='2'/%3E%3Cuse xlink:href='%23s' x='3' y='0'/%3E%3Cuse xlink:href='%23s' x='0' y='3'/%3E%3C/g%3E%3Cg fill='%23e0e0e0'%3E%3Cuse xlink:href='%23s' x='8' y='3'/%3E%3Cuse xlink:href='%23s' x='4' y='2'/%3E%3Cuse xlink:href='%23s' x='5' y='4'/%3E%3Cuse xlink:href='%23s' x='10' y='0'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='e' width='47' height='23' patternUnits='userSpaceOnUse'%3E%3Cg fill='%23BA7'%3E%3Cuse xlink:href='%23s' x='2' y='5'/%3E%3Cuse xlink:href='%23s' x='23' y='13'/%3E%3Cuse xlink:href='%23s' x='4' y='18'/%3E%3Cuse xlink:href='%23s' x='35' y='9'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='f' width='61' height='31' patternUnits='userSpaceOnUse'%3E%3Cg fill='%23BA7'%3E%3Cuse xlink:href='%23s' x='16' y='0'/%3E%3Cuse xlink:href='%23s' x='13' y='22'/%3E%3Cuse xlink:href='%23s' x='44' y='15'/%3E%3Cuse xlink:href='%23s' x='12' y='11'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23a)' width='50' height='25'/%3E%3Crect fill='url(%23b)' width='50' height='25'/%3E%3Crect fill='url(%23c)' width='50' height='25'/%3E%3Crect fill='url(%23d)' width='50' height='25'/%3E%3Crect fill='url(%23e)' width='50' height='25'/%3E%3Crect fill='url(%23f)' width='50' height='25'/%3E%3C/svg%3E");
+    background-attachment: fixed;
+    background-size: cover;
+  }
+
+  .full {
+    height: 100vh;
   }
 
   .fullpage {
-    height: 100vh;
-    /* margin-top: 30px; */
+      /* height: 100vh; */
+      /* padding: 10px; */
+      padding-bottom: 40px;
+      padding-top: 20px;
+      background: white;
+      /* box-shadow: 5px 10px #888888; */
+      /* -webkit-box-shadow: 10px 10px 5px -6px rgba(196,196,196,0.48); */
+      -moz-box-shadow: 10px 10px 5px -6px rgba(196,196,196,0.48);
+      /* box-shadow: 10px 10px 5px -6px rgba(196,196,196,0.48); */
+      -webkit-box-shadow: 0px -1px 5px 5px rgba(196,196,196,0.48);
+      -moz-box-shadow: 0px -1px 5px 5px rgba(196,196,196,0.48);
+      box-shadow: 0px -1px 5px 5px rgba(196,196,196,0.48);
+      margin-top: 30px;
   }
 
   .message {
@@ -90,9 +100,9 @@
 /**
  * TODO: fill this in.
  */
-  import { VueTyper } from 'vue-typer';
   import _ from 'lodash';
   import Vue from 'vue';
+  import { VStepper } from 'vue-stepper-component';
   import Arrow from './Animations/ArrowDown';
   import Bubbles from './Animations/Bubbles';
   import WidgetSelector from './WidgetSelector';
@@ -117,10 +127,10 @@
   export default {
     name: 'tutorial',
     components: {
-      'vue-typer': VueTyper,
       Arrow,
       Bubbles,
       WidgetSelector,
+      VStepper,
     },
     data() {
       return {
@@ -136,6 +146,8 @@
         * User settings from firebase (not implemented yet)
         */
         userSettings: {}, // TODO: fill this properly
+        // steps: 30,
+        step: undefined,
       };
     },
     props: {
@@ -176,8 +188,12 @@
       /**
        * The steps defined in config, with text and images to display.
        */
-      steps() {
+      tutSteps() {
         return this.config.tutorial.steps;
+      },
+      steps() {
+        return this.config.tutorial.steps.intro.length +
+          (this.config.tutorial.steps.examples.length - 1);
       },
       /**
        * The type of background animation to show.
@@ -257,13 +273,13 @@
      * Add a scroll listener when the component is created.
      */
     created() {
-      window.addEventListener('scroll', this.handleScroll);
+      // window.addEventListener('scroll', this.handleScroll);
     },
     /**
      * Remove the scroll listener when the component is destroyed.
      */
     destroyed() {
-      window.removeEventListener('scroll', this.handleScroll);
+      // window.removeEventListener('scroll', this.handleScroll);
     },
   };
 </script>
