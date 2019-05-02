@@ -263,7 +263,7 @@ export default {
           tutorialStep: 2,
         },
         {
-          text: 'Are you ready to play?',
+          text: 'Are you ready to play? Don\'t worry about making mistakes - you\'ll get guidance on some brains as you go along, and you can always return to the tutorial or ask for help on a brain with the "Help" button if you\'re not sure',
           tutorialCompleted: true,
         },
       ],
