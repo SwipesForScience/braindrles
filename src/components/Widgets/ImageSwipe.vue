@@ -238,7 +238,9 @@
        */
       getScore(response, groundTruth) {
         const fb = this.getFeedback(response, groundTruth);
-        if (fb.variant === 'danger') {
+        if (fb.variant === 'danger' && !_.isEmpty(groundTruth)) {
+          return -1;
+        } else if (fb.variant === 'danger') {
           return 0;
         }
         return 1;
