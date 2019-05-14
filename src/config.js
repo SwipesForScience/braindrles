@@ -186,29 +186,30 @@ export default {
       // that the widget will display
     steps: {
       intro: [
+        {},
         {
             // keep the text really short
           text: 'Stroke causes lesions, which appear as holes or darker colored regions in the brain:',
-          image: 'https://raw.githubusercontent.com/npnl/braindrles/master/src/assets/gifbrles_031859_intro.gif',
+          image: 'https://raw.githubusercontent.com/SwipesForScience/braindrles/master/src/assets/tutorialpics/gifbrles_031859_intro.gif',
         },
         {
             // use \n to linebreak the text
           text: `Lesions can be anywhere in the brain and come in all shapes and sizes. \n
           In a passing image, you can clearly see the lesion correctly labeled in red:`,
-          image: 'https://braindrles.us/static/img/gifbrles_031910_large.gif',
+          image: 'https://raw.githubusercontent.com/SwipesForScience/braindrles/master/src/assets/tutorialpics/gifbrles_031910_large.gif',
         },
         {
           // keep the text really short
           //eslint-disable-next-line
           text: `In a failing image, the lesion mask (in red) is incorrectly labeled.
           Sometimes the lesion mask covers healthy tissue:`,
-          image: 'https://braindrles.us/static/img/fail_gifbrles_c0011s0006t01_no_lesion.gif',
+          image: 'https://raw.githubusercontent.com/SwipesForScience/braindrles/master/src/assets/tutorialpics/fail_gifbrles_c0011s0006t01_no_lesion.gif',
         },
         {
           // keep the text really short
           //eslint-disable-next-line
           text: `Sometimes you won't see a lesion but there is a lesion mask anyway:`,
-          image: 'https://braindrles.us/static/img/fail_gifbrles_c0007s0014t01_wrong.gif',
+          image: 'https://raw.githubusercontent.com/SwipesForScience/braindrles/master/src/assets/tutorialpics/fail_gifbrles_c0007s0014t01_wrong.gif',
         },
       ],
       examples: [

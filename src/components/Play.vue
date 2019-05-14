@@ -469,7 +469,12 @@
         this.sendVote(response, timeDiff);
 
         // 3. update the score and count for the sample
-        this.updateScore(this.$refs.widget.getScore(response, this.currentGroundTruth));
+        let score = this.$refs.widget.getScore(response, this.currentGroundTruth);
+        // its a bummer if you get the first one wrong. lets not let people go below 0.
+        if (!this.currentLevel && score < 0) {
+          score = 0;
+        }
+        this.updateScore(score);
         this.updateSummary(this.$refs.widget.getSummary(response));
         this.updateCount();
         this.updateSeen();
