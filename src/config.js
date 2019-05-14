@@ -6,7 +6,7 @@ export default {
   // they haven't taken a tutorial
   needsTutorial: true,
   showConfigure: false,
-  needsConsent: false,
+  needsConsent: true,
     // each time the app is run, it will check this manifest and update the firebase database
     // if new entries are there, they will be added, and entries that aren't in the manifest
     // but are in the firebase database will be *removed*
