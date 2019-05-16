@@ -3,6 +3,7 @@
     <h1> Sign Up </h1>
     <!-- Modal Component -->
     <b-modal id="consentform" title="Consent Form"
+      no-close-on-backdrop no-close-on-esc hide-header-close
       ref="consentform" size="lg">
       <terms></terms>
       <div slot="modal-footer" class="w-100">
@@ -137,6 +138,12 @@
       },
     },
     components: { terms: Terms },
+    /**
+    * auto open the consent form
+    */
+    mounted() {
+      this.$refs.consentform.show();
+    },
     computed: {
       /**
        * The form is validated if the user types the same password twice.
