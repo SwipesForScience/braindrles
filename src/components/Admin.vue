@@ -268,7 +268,7 @@ export default {
     * if there is a continuation token..
     */
     S3Continuation(token) {
-      const url = this.getS3URL();
+      const url = this.getS3URL(token);
       if (!token) {
         return 0;
       }
@@ -292,6 +292,7 @@ export default {
       if (token) {
         url += `&continuation-token=${token}`;
       }
+      console.log('s3 url', url);
       return url;
     },
     /**

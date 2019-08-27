@@ -11,7 +11,7 @@ export default {
     // if new entries are there, they will be added, and entries that aren't in the manifest
     // but are in the firebase database will be *removed*
   manifestS3: {
-    bucketURL: 'https://cors-anywhere.herokuapp.com/https://braindrlesgifs.s3-us-west-1.amazonaws.com/?list-type=2&prefix=gifbrles',
+    bucketURL: 'https://cors-anywhere.herokuapp.com/https://braindrlesgifs.s3-us-west-1.amazonaws.com/?list-type=2&prefix=gifbrles&max-keys=10000',
     bucket: 'braindrlesgifs',
     prefix: '',
     delimiter: '',
