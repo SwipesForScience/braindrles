@@ -7,7 +7,7 @@
       {{data.index + 1}}
     </template>
     <template slot="badge" slot-scope="data">
-      <img class="avatar" :src="levels[data.item.level].img" />
+      <img class="avatar" :src="levels[data.item.level] ? levels[data.item.level].img : null" />
     </template>
     </b-table>
   </div>
